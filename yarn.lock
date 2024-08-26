@@ -1897,9 +1897,9 @@ kleur@^4.1.5:
   integrity sha512-o+NO+8WrRiQEE4/7nwRJhN1HWpVmJm511pBHUxPLtp0BUISzlBplORYSmTclCnJvQq2tKu/sgl3xVpkc7ZWuQQ==
 
 knave-2e-generator@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/knave-2e-generator/-/knave-2e-generator-1.1.0.tgz#efbbfa4491bb9bb8b9a9dc01c72aa143df3a1cbd"
-  integrity sha512-vyN/cyBzB5RQQXk103W8oh4sO8e/cLXuIYnIOO2Ye10BHLmt8p2F2sgHdA2erfH4fJF2Q+PXvYqjgbxuhouQJg==
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/knave-2e-generator/-/knave-2e-generator-1.2.1.tgz#59a3571e61729f2a8bea336625d4cb4d2e47641d"
+  integrity sha512-DRMnMGLFd0+bUoPmwrOkmP8gWrr5nSgA2RNvnlkIr4uZMU/AYe5GoIeKBMfTtYAQ0/kvaEFPS+TRoDwLXopakw==
 
 load-yaml-file@^0.2.0:
   version "0.2.0"

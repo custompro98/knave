@@ -8,9 +8,132 @@
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
+		<title>Knave</title>
 	</head>
 	<body>
-		<h1>Astro</h1>
+		<h1>Knave</h1>
+        <div x-data="{ knaves: [] }">
+            <h2>Your Knaves</h2>
+            <template x-for="knave in knaves">
+                <div>
+                    <h3 x-text="knave.name"></h3>
+                    <div>
+                        <p>Level: <span x-text="knave.level"></span></p>
+                        <p>XP: <span x-text="knave.xp"></span></p>
+                    </div>
+
+                    <div>
+                        <p>Career: <span x-text="knave.firstCareer"></span></p>
+                        <p>Career: <span x-text="knave.secondCareer"></span></p>
+                    </div>
+
+                    <div>
+                        <p>STR: <span x-text="knave.str"></span></p>
+                        <p>DEX: <span x-text="knave.dex"></span></p>
+                        <p>CON: <span x-text="knave.con"></span></p>
+                        <p>INT: <span x-text="knave.int"></span></p>
+                        <p>WIS: <span x-text="knave.wis"></span></p>
+                        <p>CHA: <span x-text="knave.cha"></span></p>
+                    </div>
+
+                    <div>
+                        <template x-for="(item, index) in knave.items">
+                            <div x-id="['text-input']">
+                                <label :for="$id('text-input')"><span x-text="index + 1"></span><span>.</span></label>
+                                <input type="text" x-model="item" :id="$id('text-input')"></input>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </template>
+            <button x-on:click="knaves.push(rollKnave())">
+                New adventurer
+            </button>
+        </div>
 	</body>
+    <script>
+        import Alpine from 'alpinejs';
+        import { rollOnTable } from 'knave-2e-generator';
+
+        function rolld6() {
+            return Math.floor(Math.random() * 6) + 1;
+        }
+
+        declare global {
+            interface Window {
+                Alpine: typeof Alpine;
+
+                rollKnave: () => ReturnType<typeof rollKnave>;
+
+                rollMonster: () => ReturnType<typeof rollOnTable>;
+                rollMonsterTrait: () => ReturnType<typeof rollOnTable>;
+                rollScent: () => ReturnType<typeof rollOnTable>;
+                rollWeakness: () => ReturnType<typeof rollOnTable>;
+            }
+        }
+
+        const abilities = ['str', 'dex', 'con', 'int', 'wis', 'cha'];
+
+        function makeAbilityScoreCounter(rolls: number[]) {
+            return function (ability: typeof abilities[number]) {
+                const targetIdx = abilities.indexOf(ability);
+
+                return rolls.reduce((acc, roll) => {
+                    if ((roll - 1) == targetIdx) {
+                        return acc + 1;
+                    }
+                    return acc;
+                }, 0);
+            }
+        }
+
+        function itemsFromCareer(career: string) {
+            return career // name (item1, item2, item3)
+                .split('(')[1] // item1, item2, item3)
+                .split(',') // ['item1', ' item2', ' item3)']
+                .map(item => item.trim()) // ['item1', 'item2', 'item3)']
+                .map(item => item.replace(/\)$/, '')); // ['item1', 'item2', 'item3']
+        }
+
+        function rollKnave() {
+            const name = rollOnTable('names');
+            const rolls = [rolld6(), rolld6(), rolld6()]
+
+            const generateAbilityScore = makeAbilityScoreCounter(rolls);
+            const con = generateAbilityScore('con');
+            const items = [...Array(10 + con)];
+
+            const firstCareer = rollOnTable('careers');
+            const secondCareer = rollOnTable('careers');
+
+            [...itemsFromCareer(firstCareer), ...itemsFromCareer(secondCareer)].forEach((item, idx) => {
+                items[idx] = item;
+            });
+
+            return {
+                name,
+                str: generateAbilityScore('str'),
+                dex: generateAbilityScore('dex'),
+                con: con,
+                int: generateAbilityScore('int'),
+                wis: generateAbilityScore('wis'),
+                cha: generateAbilityScore('cha'),
+                level: 1,
+                xp: 0,
+                items,
+                hp: rolld6(),
+                firstCareer,
+                secondCareer,
+            }
+        }
+
+        window.Alpine = Alpine;
+        window.rollKnave = rollKnave;
+    </script>
+
+    <style is:global>
+        [x-cloak] {
+            display: none !important;
+        }
+    </style>
 </html>
