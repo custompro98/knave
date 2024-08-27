@@ -3,137 +3,237 @@
 ---
 
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Knave</title>
-	</head>
-	<body>
-		<h1>Knave</h1>
-        <div x-data="{ knaves: [] }">
-            <h2>Your Knaves</h2>
-            <template x-for="knave in knaves">
-                <div>
-                    <h3 x-text="knave.name"></h3>
-                    <div>
-                        <p>Level: <span x-text="knave.level"></span></p>
-                        <p>XP: <span x-text="knave.xp"></span></p>
-                    </div>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Knave</title>
+  </head>
+  <script>
+    // Helper function
+    /** @ts-ignore-next-line */
+    let domReady = (cb) => {
+      document.readyState === "interactive" ||
+      document.readyState === "complete"
+        ? cb()
+        : document.addEventListener("DOMContentLoaded", cb);
+    };
 
-                    <div>
-                        <p>Career: <span x-text="knave.firstCareer"></span></p>
-                        <p>Career: <span x-text="knave.secondCareer"></span></p>
-                    </div>
-
-                    <div>
-                        <p>STR: <span x-text="knave.str"></span></p>
-                        <p>DEX: <span x-text="knave.dex"></span></p>
-                        <p>CON: <span x-text="knave.con"></span></p>
-                        <p>INT: <span x-text="knave.int"></span></p>
-                        <p>WIS: <span x-text="knave.wis"></span></p>
-                        <p>CHA: <span x-text="knave.cha"></span></p>
-                    </div>
-
-                    <div>
-                        <template x-for="(item, index) in knave.items">
-                            <div x-id="['text-input']">
-                                <label :for="$id('text-input')"><span x-text="index + 1"></span><span>.</span></label>
-                                <input type="text" x-model="item" :id="$id('text-input')"></input>
-                            </div>
-                        </template>
-                    </div>
-                </div>
-            </template>
-            <button x-on:click="knaves.push(rollKnave())">
-                New adventurer
-            </button>
+    domReady(() => {
+      // Display body when DOM is loaded
+      document.body.style.visibility = "visible";
+    });
+  </script>
+  <body class="flex min-h-screen flex-col" style="visibility: hidden">
+    <header
+      class="bg-flame-500 flex h-24 flex-row items-center justify-center p-4"
+    >
+      <h1 class="font-heading text-5xl font-bold tracking-wide">Knave</h1>
+    </header>
+    <main class="mb-auto">
+      <section class="p-4" x-data="{ knaves: [rollKnave(), rollKnave()] }">
+        <div class="flex flex-row justify-between pb-2">
+          <h2 class="font-heading text-3xl tracking-tight">Knaves</h2>
+          <button x-on:click="knaves = [rollKnave(), ...knaves]">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              stroke-width="2.0"
+              stroke="currentColor"
+              class="size-6 text-black"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"></path>
+            </svg>
+          </button>
         </div>
-	</body>
-    <script>
-        import Alpine from 'alpinejs';
-        import { rollOnTable } from 'knave-2e-generator';
+        <div class="grid grid-cols-1 gap-2">
+          <template x-for="knave in knaves">
+            <div class="shadow-bold border-2 border-black p-2">
+              <div class="flex flex-row items-center justify-between">
+                <div>
+                  <h3 class="font-serif text-lg" x-text="knave.name"></h3>
+                </div>
+                <div
+                  class="flex flex-row items-center gap-2 text-sm text-black/75"
+                >
+                  <span class="font-serif"
+                    >Level: <span x-text="knave.level"></span></span
+                  >
+                  <span class="font-serif"
+                    >XP: <span x-text="knave.xp"></span></span
+                  >
+                </div>
+              </div>
+              <div class="flex flex-row gap-1 pb-2 text-sm text-black/75">
+                <span>Formerly a(n)</span>
+                <span class="lowercase" x-text="knave.firstCareer"></span>
+              </div>
+              <div class="grid grid-cols-3 gap-2 pb-2">
+                <div class="flex flex-col items-center justify-center">
+                  <h4 class="text-sm text-black/75">STR</h4>
+                  <span class="text-lg" x-text="knave.str"></span>
+                </div>
+                <div class="flex flex-col items-center justify-center">
+                  <h4 class="text-sm text-black/75">DEX</h4>
+                  <span class="text-lg" x-text="knave.dex"></span>
+                </div>
+                <div class="flex flex-col items-center justify-center">
+                  <h4 class="text-sm text-black/75">CON</h4>
+                  <span class="text-lg" x-text="knave.con"></span>
+                </div>
+                <div class="flex flex-col items-center justify-center">
+                  <h4 class="text-sm text-black/75">INT</h4>
+                  <span class="text-lg" x-text="knave.int"></span>
+                </div>
+                <div class="flex flex-col items-center justify-center">
+                  <h4 class="text-sm text-black/75">WIS</h4>
+                  <span class="text-lg" x-text="knave.wis"></span>
+                </div>
+                <div class="flex flex-col items-center justify-center">
+                  <h4 class="text-sm text-black/75">CHA</h4>
+                  <span class="text-lg" x-text="knave.cha"></span>
+                </div>
+              </div>
+              <div>
+                <h4 class="text-lg">Inventory</h4>
+                <div class="grid grid-cols-2 gap-2">
+                  <template x-for="(item, index) in knave.items">
+                    <div
+                      class="flex flex-row items-center gap-1"
+                      x-id="['text-input']"
+                    >
+                      <label
+                        class="text-sm text-black/75"
+                        :for="$id('text-input')"
+                      >
+                        <span x-text="index + 1"></span><span>.</span>
+                      </label>
+                      <input
+                        class="max-w-40 border border-gray-200/75"
+                        type="text"
+                        x-model="item"
+                        :id="$id('text-input')"
+                      />
+                    </div>
+                  </template>
+                </div>
+              </div>
+            </div>
+          </template>
+        </div>
+      </section>
+    </main>
+    <footer
+      class="bg-flame-500 flex h-24 flex-row items-center justify-center p-4"
+    >
+      <span>
+        Buy <span class="font-heading">Knave</span> on <a
+          class="text-blue-500 hover:underline"
+          href="https://www.drivethrurpg.com/en/product/484910/knave-second-edition"
+          >DriveThruRPG</a
+        >
+      </span>
+    </footer>
+  </body>
 
-        function rolld6() {
-            return Math.floor(Math.random() * 6) + 1;
-        }
+  <script>
+    import Alpine from "alpinejs";
+    import { rollOnTable } from "knave-2e-generator";
 
-        declare global {
-            interface Window {
-                Alpine: typeof Alpine;
+    function rolld6() {
+      return Math.floor(Math.random() * 6) + 1;
+    }
 
-                rollKnave: () => ReturnType<typeof rollKnave>;
+    declare global {
+      interface Window {
+        Alpine: typeof Alpine;
 
-                rollMonster: () => ReturnType<typeof rollOnTable>;
-                rollMonsterTrait: () => ReturnType<typeof rollOnTable>;
-                rollScent: () => ReturnType<typeof rollOnTable>;
-                rollWeakness: () => ReturnType<typeof rollOnTable>;
-            }
-        }
+        rollKnave: () => ReturnType<typeof rollKnave>;
 
-        const abilities = ['str', 'dex', 'con', 'int', 'wis', 'cha'];
+        rollMonster: () => ReturnType<typeof rollOnTable>;
+        rollMonsterTrait: () => ReturnType<typeof rollOnTable>;
+        rollScent: () => ReturnType<typeof rollOnTable>;
+        rollWeakness: () => ReturnType<typeof rollOnTable>;
+      }
+    }
 
-        function makeAbilityScoreCounter(rolls: number[]) {
-            return function (ability: typeof abilities[number]) {
-                const targetIdx = abilities.indexOf(ability);
+    const abilities = ["str", "dex", "con", "int", "wis", "cha"];
 
-                return rolls.reduce((acc, roll) => {
-                    if ((roll - 1) == targetIdx) {
-                        return acc + 1;
-                    }
-                    return acc;
-                }, 0);
-            }
-        }
+    function makeAbilityScoreCounter(rolls: number[]) {
+      return function (ability: (typeof abilities)[number]) {
+        const targetIdx = abilities.indexOf(ability);
 
-        function itemsFromCareer(career: string) {
-            return career // name (item1, item2, item3)
-                .split('(')[1] // item1, item2, item3)
-                .split(',') // ['item1', ' item2', ' item3)']
-                .map(item => item.trim()) // ['item1', 'item2', 'item3)']
-                .map(item => item.replace(/\)$/, '')); // ['item1', 'item2', 'item3']
-        }
+        return rolls.reduce((acc, roll) => {
+          if (roll - 1 == targetIdx) {
+            return acc + 1;
+          }
+          return acc;
+        }, 0);
+      };
+    }
 
-        function rollKnave() {
-            const name = rollOnTable('names');
-            const rolls = [rolld6(), rolld6(), rolld6()]
+    function itemsFromCareer(career: string) {
+      return career // name (item1, item2, item3)
+        .split("(")[1] // item1, item2, item3)
+        .split(",") // ['item1', ' item2', ' item3)']
+        .map((item) => item.trim()) // ['item1', 'item2', 'item3)']
+        .map((item) => item.replace(/\)$/, "")); // ['item1', 'item2', 'item3']
+    }
 
-            const generateAbilityScore = makeAbilityScoreCounter(rolls);
-            const con = generateAbilityScore('con');
-            const items = [...Array(10 + con)];
+    function careerName(career: string) {
+      return career // name (item1, item2, item3)
+        .split("(")[0] // 'name '
+        .trim(); // name
+    }
 
-            const firstCareer = rollOnTable('careers');
-            const secondCareer = rollOnTable('careers');
+    function rollKnave() {
+      const name = rollOnTable("names");
+      const rolls = [rolld6(), rolld6(), rolld6()];
 
-            [...itemsFromCareer(firstCareer), ...itemsFromCareer(secondCareer)].forEach((item, idx) => {
-                items[idx] = item;
-            });
+      const generateAbilityScore = makeAbilityScoreCounter(rolls);
+      const con = generateAbilityScore("con");
+      const items = [...Array(10 + con)];
 
-            return {
-                name,
-                str: generateAbilityScore('str'),
-                dex: generateAbilityScore('dex'),
-                con: con,
-                int: generateAbilityScore('int'),
-                wis: generateAbilityScore('wis'),
-                cha: generateAbilityScore('cha'),
-                level: 1,
-                xp: 0,
-                items,
-                hp: rolld6(),
-                firstCareer,
-                secondCareer,
-            }
-        }
+      const firstCareer = rollOnTable("careers");
 
-        window.Alpine = Alpine;
-        window.rollKnave = rollKnave;
-    </script>
+      itemsFromCareer(firstCareer).forEach((item, idx) => {
+        items[idx] = item;
+      });
 
-    <style is:global>
-        [x-cloak] {
-            display: none !important;
-        }
-    </style>
+      return {
+        name,
+        str: generateAbilityScore("str"),
+        dex: generateAbilityScore("dex"),
+        con: con,
+        int: generateAbilityScore("int"),
+        wis: generateAbilityScore("wis"),
+        cha: generateAbilityScore("cha"),
+        level: 1,
+        xp: 0,
+        items,
+        hp: rolld6(),
+        firstCareer: careerName(firstCareer),
+      };
+    }
+
+    window.Alpine = Alpine;
+    window.rollKnave = rollKnave;
+  </script>
+  <style is:global>
+    [x-cloak] {
+      display: none !important;
+    }
+
+    @font-face {
+      font-family: "SebaldusGotisch";
+      src: url("/fonts/SebaldusGotisch.ttf") format("truetype");
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+  </style>
 </html>
