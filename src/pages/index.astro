@@ -107,7 +107,7 @@
               <div class="mb-auto">
                 <h4 class="text-lg">Inventory</h4>
                 <div class="grid grid-cols-2 gap-2">
-                  <template x-for="(item, index) in knave.items">
+                  <template x-for="(_, idx) in knave.items">
                     <div
                       class="flex flex-row items-center gap-1"
                       x-id="['text-input']"
@@ -116,13 +116,13 @@
                         class="text-sm text-black/75"
                         :for="$id('text-input')"
                       >
-                        <span x-text="index + 1"></span><span>.</span>
+                        <span x-text="idx + 1"></span><span>.</span>
                       </label>
                       <input
                         class="max-w-40 border border-gray-200/75"
                         type="text"
-                        x-model="item"
-                        x-on:input.change.debounce="knave.items[index] = item; upsertKnave(knave)"
+                        x-model="knave.items[idx]"
+                        x-on:input.change.debounce="upsertKnave(knave)"
                         :id="$id('text-input')"
                         :name="$id('text-input')"
                       />
