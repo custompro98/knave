@@ -122,6 +122,7 @@
                         class="max-w-40 border border-gray-200/75"
                         type="text"
                         x-model="item"
+                        x-on:input.change.debounce="knave.items[index] = item; upsertKnave(knave)"
                         :id="$id('text-input')"
                         :name="$id('text-input')"
                       />
@@ -139,7 +140,7 @@
                     viewBox="0 0 24 24"
                     stroke-width="1.5"
                     stroke="currentColor"
-                    class="size-6 text-red-500"
+                    class="size-6 text-red-500 hover:fill-red-700"
                   >
                     <path
                       stroke-linecap="round"
@@ -148,14 +149,15 @@
                     ></path>
                   </svg>
                 </button>
-                <button x-on:click="upsertKnave(knave)">
+                <button x-on:click="knave.saved = true; upsertKnave(knave)">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
+                    fill="None"
                     viewBox="0 0 24 24"
                     stroke-width="1.5"
                     stroke="currentColor"
-                    class="size-6 text-blue-500"
+                    class="size-6 text-blue-500 hover:fill-blue-700"
+                    :class="knave.saved ? 'fill-blue-300' : ''"
                   >
                     <path
                       stroke-linecap="round"

@@ -14,6 +14,7 @@ export interface Knave {
   items: any[];
   hp: number;
   firstCareer: string;
+  saved: boolean;
 }
 
 const LOCAL_STORAGE_KEY_KNAVES = "knaves";
@@ -75,6 +76,7 @@ export function rollKnave(): Knave {
     items,
     hp: rolld6(),
     firstCareer: careerName(firstCareer),
+    saved: false,
   };
 }
 
