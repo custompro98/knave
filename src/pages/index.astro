@@ -38,7 +38,7 @@
         </div>
         <div class="grid grid-cols-1 gap-2 md:grid-cols-3">
           <div
-            class="flex min-h-[26.25rem] max-w-sm cursor-pointer flex-col items-center justify-center border-2 border-black p-2 shadow-bold"
+            class="hover:shadow-bolder flex min-h-[26.25rem] max-w-sm cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-black p-2 shadow-bold active:shadow-none"
             x-on:click="knaves = [rollKnave(), ...knaves]"
           >
             <svg
@@ -57,7 +57,7 @@
           </div>
           <template x-for="knave in knaves">
             <div
-              class="flex max-w-sm flex-col border-2 border-black p-2 shadow-bold"
+              class="flex max-w-sm flex-col rounded-lg border-2 border-black p-2 shadow-bold"
             >
               <div class="flex flex-row items-center justify-between">
                 <div>
@@ -66,6 +66,14 @@
                 <div
                   class="flex flex-row items-center gap-2 text-sm text-black/75"
                 >
+                  <span class="font-serif">
+                    HP: <input
+                      class="w-4 border border-gray-200/75 text-right"
+                      max="knave.maxHp"
+                      x-model="knave.curHp"
+                      x-on:input.change.debounce="upsertKnave(knave)"
+                    /> / <span x-text="knave.maxHp"></span>
+                  </span>
                   <span class="font-serif">
                     Level: <span x-text="knave.level"></span>
                   </span>
@@ -149,7 +157,9 @@
                     ></path>
                   </svg>
                 </button>
-                <button x-on:click="knave.saved = true; upsertKnave(knave)">
+                <button
+                  x-on:click="knave.saved = !knave.saved; knave.saved ? upsertKnave(knave) : deleteKnave(knave.id)"
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="None"

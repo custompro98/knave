@@ -2,6 +2,11 @@ import { rollOnTable } from "knave-2e-generator";
 
 export interface Knave {
   id: string;
+  level: number;
+  xp: number;
+  curHp: number;
+  maxHp: number;
+  firstCareer: string;
   name: string;
   str: number;
   dex: number;
@@ -9,11 +14,7 @@ export interface Knave {
   int: number;
   wis: number;
   cha: number;
-  level: number;
-  xp: number;
   items: any[];
-  hp: number;
-  firstCareer: string;
   saved: boolean;
 }
 
@@ -62,6 +63,8 @@ export function rollKnave(): Knave {
     items[idx] = item;
   });
 
+  const hp = rolld6();
+
   return {
     id: crypto.randomUUID(),
     name,
@@ -74,7 +77,8 @@ export function rollKnave(): Knave {
     level: 1,
     xp: 0,
     items,
-    hp: rolld6(),
+    curHp: hp,
+    maxHp: hp,
     firstCareer: careerName(firstCareer),
     saved: false,
   };
