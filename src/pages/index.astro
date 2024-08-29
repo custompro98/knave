@@ -34,12 +34,12 @@
     >
       <h1 class="font-heading text-5xl font-bold tracking-wide">Knave</h1>
     </header>
-    <main class="mb-auto">
-      <section class="mx-auto max-w-screen-xl p-4" x-data="{ knaves: knaves }">
+    <main class="mx-auto mb-auto">
+      <section class="max-w-screen-xl p-4" x-data="{ knaves: knaves }">
         <div class="flex flex-row justify-between pb-2">
           <h2 class="font-heading text-3xl tracking-tight">Knaves</h2>
         </div>
-        <div class="grid grid-cols-1 gap-2 md:grid-cols-3">
+        <div class="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3">
           <div
             class="flex min-h-[26.25rem] max-w-sm cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-black p-2 shadow-bold hover:shadow-bolder active:shadow-none"
             x-on:click="knaves = [rollKnave(), ...knaves]"
@@ -133,7 +133,7 @@
                         <span x-text="idx + 1"></span><span>.</span>
                       </label>
                       <input
-                        class="max-w-40 border border-gray-200/75"
+                        class="max-w-40 border border-gray-200/75 md:max-w-36 lg:max-w-32 xl:max-w-40"
                         type="text"
                         x-model="knave.items[idx]"
                         x-on:input.change.debounce="upsertKnave(knave)"
