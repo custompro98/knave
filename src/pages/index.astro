@@ -41,7 +41,7 @@
         </div>
         <div class="grid grid-cols-1 gap-2 md:grid-cols-3">
           <div
-            class="hover:shadow-bolder flex min-h-[26.25rem] max-w-sm cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-black p-2 shadow-bold active:shadow-none"
+            class="flex min-h-[26.25rem] max-w-sm cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-black p-2 shadow-bold hover:shadow-bolder active:shadow-none"
             x-on:click="knaves = [rollKnave(), ...knaves]"
           >
             <svg
@@ -88,6 +88,9 @@
               <div class="flex flex-row gap-1 pb-2 text-sm text-black/75">
                 <span>Former</span>
                 <span class="lowercase" x-text="knave.firstCareer"></span>
+                <span class="lowercase" x-show="knave.secondCareer">
+                  and <span x-text="knave.secondCareer"></span>
+                </span>
               </div>
               <div class="grid grid-cols-3 gap-2 pb-2">
                 <div class="flex flex-col items-center justify-center">

@@ -7,6 +7,7 @@ export interface Knave {
   curHp: number;
   maxHp: number;
   firstCareer: string;
+  secondCareer: string | undefined;
   name: string;
   str: number;
   dex: number;
@@ -20,14 +21,14 @@ export interface Knave {
 
 const LOCAL_STORAGE_KEY_KNAVES = "knaves";
 
-const abilities = ["str", "dex", "con", "int", "wis", "cha"];
+const ABILITIES = ["str", "dex", "con", "int", "wis", "cha"];
 
 function makeAbilityScoreCounter(rolls: number[]) {
-  return function (ability: (typeof abilities)[number]) {
-    const targetIdx = abilities.indexOf(ability);
+  return function (ability: (typeof ABILITIES)[number]) {
+    const targetIdx = ABILITIES.indexOf(ability) + 1;
 
     return rolls.reduce((acc, roll) => {
-      if (roll - 1 == targetIdx) {
+      if (roll == targetIdx) {
         return acc + 1;
       }
       return acc;
@@ -40,7 +41,8 @@ function itemsFromCareer(career: string) {
     .split("(")[1] // item1, item2, item3)
     .split(",") // ['item1', ' item2', ' item3)']
     .map((item) => item.trim()) // ['item1', 'item2', 'item3)']
-    .map((item) => item.replace(/\)$/, "")); // ['item1', 'item2', 'item3']
+    .map((item) => item.replace(/\)$/, "")) // ['item1', 'item2', 'item3']
+    .map((item) => `${item[0].toUpperCase()}${item.slice(1).toLowerCase()}`); // ['Item1', 'Item2', 'Item3']
 }
 
 function careerName(career: string) {
@@ -58,10 +60,37 @@ export function rollKnave(): Knave {
   const items = [...Array(10 + con)];
 
   const firstCareer = rollOnTable("careers");
+  const secondCareer = rollOnTable("careers");
 
-  itemsFromCareer(firstCareer).forEach((item, idx) => {
+  const itemsFromCareers = [
+    ...itemsFromCareer(firstCareer),
+    ...itemsFromCareer(secondCareer),
+  ];
+
+  // Items from careers come first
+  itemsFromCareers.forEach((item, idx) => {
     items[idx] = item;
   });
+
+  items[itemsFromCareers.length] = `${roll3d6() * 10} coins`;
+
+  // Spellbooks from intelligence come after
+  const intelligence = generateAbilityScore("int");
+  for (let i = 0; i < intelligence; i++) {
+    const nextIdx = i + itemsFromCareers.length + 1;
+    if (nextIdx < items.length) {
+      items[nextIdx] = `${rollOnTable("spellbooks")} (spellbook)`;
+    }
+  }
+
+  // Add remaining items randomly
+  const nextItemIndex = items.findIndex((item) => item === undefined);
+  const remainingSlots = items.length - nextItemIndex;
+  const slotsToFill = rolldN(remainingSlots);
+
+  for (let i = 0; i < slotsToFill; i++) {
+    items[nextItemIndex + i] = rollOnTable("generalItems");
+  }
 
   const hp = rolld6();
 
@@ -71,7 +100,7 @@ export function rollKnave(): Knave {
     str: generateAbilityScore("str"),
     dex: generateAbilityScore("dex"),
     con: con,
-    int: generateAbilityScore("int"),
+    int: intelligence,
     wis: generateAbilityScore("wis"),
     cha: generateAbilityScore("cha"),
     level: 1,
@@ -80,6 +109,7 @@ export function rollKnave(): Knave {
     curHp: hp,
     maxHp: hp,
     firstCareer: careerName(firstCareer),
+    secondCareer: careerName(secondCareer),
     saved: false,
   };
 }
@@ -134,13 +164,19 @@ export function deleteKnave(uuid: string) {
   localStorage.setItem(
     LOCAL_STORAGE_KEY_KNAVES,
     JSON.stringify(
-      JSON.parse(knaves).filter(
-        (knave: ReturnType<typeof rollKnave>) => knave.id !== uuid,
-      ),
+      JSON.parse(knaves).filter((knave: Knave) => knave.id !== uuid),
     ),
   );
 }
 
+function rolldN(n: number) {
+  return Math.floor(Math.random() * n) + 1;
+}
+
 function rolld6() {
-  return Math.floor(Math.random() * 6) + 1;
+  return rolldN(6);
+}
+
+function roll3d6() {
+  return rolld6() + rolld6() + rolld6();
 }
