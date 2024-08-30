@@ -41,7 +41,7 @@
         </div>
         <div class="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3">
           <div
-            class="flex min-h-[26.25rem] max-w-sm cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-black p-2 shadow-bold hover:shadow-bolder active:shadow-none"
+            class="flex min-h-[26.25rem] min-w-80 max-w-sm cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-black p-2 shadow-bold hover:shadow-bolder active:shadow-none"
             x-on:click="knaves = [rollKnave(), ...knaves]"
           >
             <svg
@@ -62,27 +62,50 @@
             <div
               class="flex max-w-sm flex-col rounded-lg border-2 border-black p-2 shadow-bold"
             >
-              <div class="flex flex-row items-center justify-between">
-                <div>
+              <div class="flex flex-row items-center justify-between gap-4">
+                <div class="flex flex-row items-center gap-1">
                   <h3 class="font-serif text-xl" x-text="knave.name"></h3>
                 </div>
                 <div
-                  class="flex flex-row items-center gap-2 text-sm text-black/75"
+                  class="grid grid-cols-3 gap-2 font-serif text-sm text-black/75"
                 >
-                  <span class="font-serif">
-                    HP: <input
-                      class="w-4 border border-gray-200/75 text-right"
-                      max="knave.maxHp"
-                      x-model="knave.curHp"
+                  <div
+                    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2"
+                  >
+                    <span class="self-center justify-self-center">HP</span>
+                    <div class="flex flex-row justify-center">
+                      <input
+                        class="jsutify-self-center w-4 self-center border border-gray-200/75"
+                        max="knave.maxHp"
+                        x-model="knave.curHp"
+                        x-on:input.change.debounce="upsertKnave(knave)"
+                      />
+                      <span>/</span>
+                      <span x-text="knave.maxHp"></span>
+                    </div>
+                  </div>
+                  <div
+                    class="grid grid-cols-1 md:grid-cols-2 md:gap-2 lg:grid-cols-1 lg:gap-0 xl:grid-cols-2 xl:gap-2"
+                  >
+                    <span class="self-center justify-self-center">Level</span>
+                    <input
+                      class="w-4 self-center justify-self-center border border-gray-200/75"
+                      min="0"
+                      x-model="knave.level"
                       x-on:input.change.debounce="upsertKnave(knave)"
-                    /> / <span x-text="knave.maxHp"></span>
-                  </span>
-                  <span class="font-serif">
-                    Level: <span x-text="knave.level"></span>
-                  </span>
-                  <span class="font-serif">
-                    XP: <span x-text="knave.xp"></span>
-                  </span>
+                    />
+                  </div>
+                  <div
+                    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2"
+                  >
+                    <span class="self-center justify-self-center">XP</span>
+                    <input
+                      class="w-10 self-center justify-self-center border border-gray-200/75"
+                      min="0"
+                      x-model="knave.xp"
+                      x-on:input.change.debounce="upsertKnave(knave)"
+                    />
+                  </div>
                 </div>
               </div>
               <div class="flex flex-row gap-1 pb-2 text-sm text-black/75">
@@ -95,27 +118,51 @@
               <div class="grid grid-cols-3 gap-2 pb-2">
                 <div class="flex flex-col items-center justify-center">
                   <h4 class="text-sm text-black/75">STR</h4>
-                  <span class="text-lg" x-text="knave.str"></span>
+                  <input
+                    class="w-6 border border-gray-200/75 text-center text-lg"
+                    x-model="knave.str"
+                    x-on:input.change.debounce="upsertKnave(knave)"
+                  />
                 </div>
                 <div class="flex flex-col items-center justify-center">
                   <h4 class="text-sm text-black/75">DEX</h4>
-                  <span class="text-lg" x-text="knave.dex"></span>
+                  <input
+                    class="w-6 border border-gray-200/75 text-center text-lg"
+                    x-model="knave.dex"
+                    x-on:input.change.debounce="upsertKnave(knave)"
+                  />
                 </div>
                 <div class="flex flex-col items-center justify-center">
                   <h4 class="text-sm text-black/75">CON</h4>
-                  <span class="text-lg" x-text="knave.con"></span>
+                  <input
+                    class="w-6 border border-gray-200/75 text-center text-lg"
+                    x-model="knave.con"
+                    x-on:input.change.debounce="upsertKnave(knave)"
+                  />
                 </div>
                 <div class="flex flex-col items-center justify-center">
                   <h4 class="text-sm text-black/75">INT</h4>
-                  <span class="text-lg" x-text="knave.int"></span>
+                  <input
+                    class="w-6 border border-gray-200/75 text-center text-lg"
+                    x-model="knave.int"
+                    x-on:input.change.debounce="upsertKnave(knave)"
+                  />
                 </div>
                 <div class="flex flex-col items-center justify-center">
                   <h4 class="text-sm text-black/75">WIS</h4>
-                  <span class="text-lg" x-text="knave.wis"></span>
+                  <input
+                    class="w-6 border border-gray-200/75 text-center text-lg"
+                    x-model="knave.wis"
+                    x-on:input.change.debounce="upsertKnave(knave)"
+                  />
                 </div>
                 <div class="flex flex-col items-center justify-center">
                   <h4 class="text-sm text-black/75">CHA</h4>
-                  <span class="text-lg" x-text="knave.cha"></span>
+                  <input
+                    class="w-6 border border-gray-200/75 text-center text-lg"
+                    x-model="knave.cha"
+                    x-on:input.change.debounce="upsertKnave(knave)"
+                  />
                 </div>
               </div>
               <div class="mb-auto">
