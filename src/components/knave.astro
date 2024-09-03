@@ -1,0 +1,167 @@
+---
+import { type Knave } from "../scripts/knaves";
+import Card from "./card.astro";
+---
+
+<Card>
+  <div class="flex flex-row items-center justify-between gap-4">
+    <div class="flex flex-row items-center gap-1">
+      <h3 class="font-serif text-xl" x-text="knave.name"></h3>
+    </div>
+    <div class="grid grid-cols-3 gap-2 font-serif text-sm text-black/75">
+      <div
+        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2"
+      >
+        <span class="self-center justify-self-center">HP</span>
+        <div class="flex flex-row justify-center">
+          <input
+            class="jsutify-self-center w-4 self-center border border-gray-200/75"
+            max="knave.maxHp"
+            x-model="knave.curHp"
+            x-on:input.change.debounce="knave.saved = true; upsertKnave(knave)"
+          />
+          <span>/</span>
+          <span x-text="knave.maxHp"></span>
+        </div>
+      </div>
+      <div
+        class="grid grid-cols-1 md:grid-cols-2 md:gap-2 lg:grid-cols-1 lg:gap-0 xl:grid-cols-2 xl:gap-2"
+      >
+        <span class="self-center justify-self-center">Level</span>
+        <input
+          class="w-4 self-center justify-self-center border border-gray-200/75"
+          min="0"
+          x-model="knave.level"
+          x-on:input.change.debounce="knave.saved = true; upsertKnave(knave)"
+        />
+      </div>
+      <div
+        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2"
+      >
+        <span class="self-center justify-self-center">XP</span>
+        <input
+          class="w-10 self-center justify-self-center border border-gray-200/75"
+          min="0"
+          x-model="knave.xp"
+          x-on:input.change.debounce="knave.saved = true; upsertKnave(knave)"
+        />
+      </div>
+    </div>
+  </div>
+  <div class="flex flex-row gap-1 pb-2 text-sm text-black/75">
+    <span>Former</span>
+    <span class="lowercase" x-text="knave.firstCareer"></span>
+    <span class="lowercase" x-show="knave.secondCareer">
+      and <span x-text="knave.secondCareer"></span>
+    </span>
+  </div>
+  <div class="grid grid-cols-3 gap-2 pb-2">
+    <div class="flex flex-col items-center justify-center">
+      <h4 class="text-sm text-black/75">STR</h4>
+      <input
+        class="w-6 border border-gray-200/75 text-center text-lg"
+        x-model="knave.str"
+        x-on:input.change.debounce="knave.saved = true; upsertKnave(knave)"
+      />
+    </div>
+    <div class="flex flex-col items-center justify-center">
+      <h4 class="text-sm text-black/75">DEX</h4>
+      <input
+        class="w-6 border border-gray-200/75 text-center text-lg"
+        x-model="knave.dex"
+        x-on:input.change.debounce="knave.saved = true; upsertKnave(knave)"
+      />
+    </div>
+    <div class="flex flex-col items-center justify-center">
+      <h4 class="text-sm text-black/75">CON</h4>
+      <input
+        class="w-6 border border-gray-200/75 text-center text-lg"
+        x-model="knave.con"
+        x-on:input.change.debounce="knave.saved = true; upsertKnave(knave)"
+      />
+    </div>
+    <div class="flex flex-col items-center justify-center">
+      <h4 class="text-sm text-black/75">INT</h4>
+      <input
+        class="w-6 border border-gray-200/75 text-center text-lg"
+        x-model="knave.int"
+        x-on:input.change.debounce="knave.saved = true; upsertKnave(knave)"
+      />
+    </div>
+    <div class="flex flex-col items-center justify-center">
+      <h4 class="text-sm text-black/75">WIS</h4>
+      <input
+        class="w-6 border border-gray-200/75 text-center text-lg"
+        x-model="knave.wis"
+        x-on:input.change.debounce="knave.saved = true; upsertKnave(knave)"
+      />
+    </div>
+    <div class="flex flex-col items-center justify-center">
+      <h4 class="text-sm text-black/75">CHA</h4>
+      <input
+        class="w-6 border border-gray-200/75 text-center text-lg"
+        x-model="knave.cha"
+        x-on:input.change.debounce="knave.saved = true; upsertKnave(knave)"
+      />
+    </div>
+  </div>
+  <div class="mb-auto">
+    <h4 class="text-lg">Inventory</h4>
+    <div class="grid grid-cols-2 gap-2">
+      <template x-for="(_, idx) in knave.items">
+        <div class="flex flex-row items-center gap-1" x-id="['text-input']">
+          <label class="text-sm text-black/75" :for="$id('text-input')">
+            <span x-text="idx + 1"></span><span>.</span>
+          </label>
+          <input
+            class="max-w-40 border border-gray-200/75 md:max-w-36 lg:max-w-32 xl:max-w-40"
+            type="text"
+            x-model="knave.items[idx]"
+            x-on:input.change.debounce="knave.saved = true; upsertKnave(knave)"
+            :id="$id('text-input')"
+            :name="$id('text-input')"
+          />
+        </div>
+      </template>
+    </div>
+  </div>
+  <div class="flex flex-row items-center justify-center gap-2 pt-4">
+    <button
+      x-on:click="knaves = knaves.filter((pred) => pred.id !== knave.id); deleteKnave(knave.id)"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="1.5"
+        stroke="currentColor"
+        class="size-6 text-red-500 hover:fill-red-700"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
+        ></path>
+      </svg>
+    </button>
+    <button
+      x-on:click="knave.saved = !knave.saved; knave.saved ? upsertKnave(knave) : deleteKnave(knave.id)"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="None"
+        viewBox="0 0 24 24"
+        stroke-width="1.5"
+        stroke="currentColor"
+        class="size-6 text-blue-500 hover:fill-blue-700"
+        :class="knave.saved ? 'fill-blue-300' : ''"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z"
+        ></path>
+      </svg>
+    </button>
+  </div>
+</Card>

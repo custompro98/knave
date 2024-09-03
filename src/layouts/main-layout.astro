@@ -1,0 +1,66 @@
+---
+const { title } = Astro.props;
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <script>
+      // Helper function
+      /** @ts-ignore-next-line */
+      let domReady = (cb) => {
+        document.readyState === "interactive" ||
+        document.readyState === "complete"
+          ? cb()
+          : document.addEventListener("DOMContentLoaded", cb);
+      };
+
+      domReady(() => {
+        // Display body when DOM is readed
+        document.body.style.visibility = "visible";
+      });
+    </script></head
+  >
+
+  <body class="flex min-h-screen flex-col" style="visibility: hidden">
+    <header
+      class="flex h-24 flex-row items-center justify-center bg-black p-4 text-white"
+    >
+      <h1 class="font-heading text-5xl font-bold tracking-wide">
+        <a href="/">Knave</a>
+      </h1>
+    </header>
+    <main class="mx-auto mb-auto">
+      <slot />
+    </main>
+    <footer class="flex h-24 flex-row items-center justify-center bg-black p-4">
+      <span class="text-white">
+        Buy <span class="font-heading">Knave</span> on <a
+          class="text-blue-500 hover:underline"
+          href="https://www.drivethrurpg.com/en/product/484910/knave-second-edition"
+          >DriveThruRPG</a
+        >
+      </span>
+    </footer>
+  </body>
+  <style is:global>
+    [x-cloak] {
+      display: none !important;
+    }
+
+    @font-face {
+      font-family: "SebaldusGotisch";
+      src: url("/fonts/SebaldusGotisch.ttf") format("truetype");
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+  </style>
+</html>

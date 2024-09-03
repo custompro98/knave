@@ -1,0 +1,10 @@
+---
+const { hasHoverEffect } = Astro.props;
+---
+
+<div
+  class="min-h-[26.25rem] min-w-80 max-w-sm rounded-lg border-2 border-black p-2 shadow-bold"
+  :class=`${hasHoverEffect} ? 'hover:shadow-bolder active:shadow-none' : ''`
+>
+  <slot />
+</div>
