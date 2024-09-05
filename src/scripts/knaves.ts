@@ -133,7 +133,7 @@ export function upsertKnave(knave: Knave) {
   }
 }
 
-export function createKnave(knaves: Knave[], knave: Knave) {
+function createKnave(knaves: Knave[], knave: Knave) {
   const newKnaves = [{ ...knave }, ...knaves];
   localStorage.setItem(LOCAL_STORAGE_KEY_KNAVES, JSON.stringify(newKnaves));
 }

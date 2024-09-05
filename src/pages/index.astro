@@ -1,7 +1,7 @@
 ---
 import MainLayout from "../layouts/main-layout.astro";
 import Knave from "../components/knave.astro";
-import Card from "../components/card.astro";
+import Monster from "../components/monster.astro";
 import ActionCard from "../components/action-card.astro";
 
 enum Tab {
@@ -37,13 +37,20 @@ enum Tab {
       </section>
     </template>
     <template x-if=`activeTab === '${Tab.MONSTERS}'`>
-      <div>Monsters</div>
+      <section x-data="{ monsters: monsters }">
+        <div class="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3">
+          <ActionCard handler="monsters = [rollMonster(), ...monsters]" />
+          <template x-for="monster in monsters">
+            <Monster monster={"monster"} />
+          </template>
+        </div>
+      </section>
     </template>
   </div>
 </MainLayout>
 <script>
   import Alpine from "alpinejs";
-  import { rollOnTable } from "knave-2e-generator";
+
   import {
     type Knave,
     rollKnave,
@@ -52,26 +59,40 @@ enum Tab {
     deleteKnave,
   } from "../scripts/knaves";
 
+  import {
+    type Monster,
+    rollMonster,
+    upsertMonster,
+    readMonsters,
+    deleteMonster,
+  } from "../scripts/monsters";
+
   declare global {
     interface Window {
       Alpine: typeof Alpine;
 
       knaves: Knave[];
+      monsters: Monster[];
 
       rollKnave: () => Knave;
       upsertKnave: (uuid: Knave) => void;
       deleteKnave: (uuid: string) => void;
 
-      rollMonster: () => ReturnType<typeof rollOnTable>;
-      rollMonsterTrait: () => ReturnType<typeof rollOnTable>;
-      rollScent: () => ReturnType<typeof rollOnTable>;
-      rollWeakness: () => ReturnType<typeof rollOnTable>;
+      rollMonster: () => Monster;
+      upsertMonster: (uuid: Monster) => void;
+      deleteMonster: (uuid: string) => void;
     }
   }
 
   window.Alpine = Alpine;
+
   window.rollKnave = rollKnave;
   window.upsertKnave = upsertKnave;
   window.deleteKnave = deleteKnave;
   window.knaves = readKnaves();
+
+  window.rollMonster = rollMonster;
+  window.upsertMonster = upsertMonster;
+  window.deleteMonster = deleteMonster;
+  window.monsters = readMonsters();
 </script>

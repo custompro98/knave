@@ -1,13 +1,17 @@
 ---
 import Card from "./card.astro";
 
+interface Props {
+  handler: string;
+}
+
 const { handler } = Astro.props;
 ---
 
 <Card hasHoverEffect>
   <div
     class="flex h-full w-full cursor-pointer flex-col items-center justify-center"
-    x-on:click="knaves = [rollKnave(), ...knaves]"
+    x-on:click={handler}
   >
     <svg
       xmlns="http://www.w3.org/2000/svg"
