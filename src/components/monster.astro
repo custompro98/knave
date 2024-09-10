@@ -27,7 +27,12 @@ interface Props {
               x-on:input.change.debounce="monster.saved = true; upsertMonster(monster)"
             />
             <span>/</span>
-            <span x-text="monster.maxHp"></span>
+            <input
+              class="w-6 self-center justify-self-center border border-gray-200/75 text-center"
+              name="maHp"
+              x-model="monster.maxHp"
+              x-on:input.change.debounce="monster.saved = true; upsertMonster(monster)"
+            />
           </div>
         </div>
         <div

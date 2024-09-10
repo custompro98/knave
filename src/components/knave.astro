@@ -26,7 +26,12 @@ interface Props {
             x-on:input.change.debounce="knave.saved = true; upsertKnave(knave)"
           />
           <span>/</span>
-          <span x-text="knave.maxHp"></span>
+          <input
+            class="w-4 self-center justify-self-center border border-gray-200/75 text-center"
+            name="maxHp"
+            x-model="knave.maxHp"
+            x-on:input.change.debounce="knave.saved = true; upsertKnave(knave)"
+          />
         </div>
       </div>
       <div
