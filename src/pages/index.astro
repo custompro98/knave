@@ -11,7 +11,7 @@ enum Tab {
 ---
 
 <MainLayout title="Knave">
-  <div class="max-w-screen-xl p-4" x-data="{ activeTab: 'monsters' }">
+  <div class="max-w-screen-xl p-4" x-data=`{ activeTab: '${Tab.KNAVES}' }`>
     <div class="grid grid-cols-6 lg:grid-cols-9">
       <h2
         class="w-fit cursor-pointer p-2 font-heading text-3xl tracking-tight"
