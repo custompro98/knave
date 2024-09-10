@@ -11,7 +11,7 @@ enum Tab {
 ---
 
 <MainLayout title="Knave">
-  <div class="max-w-screen-xl p-4" x-data="{ activeTab: 'knaves' }">
+  <div class="max-w-screen-xl p-4" x-data="{ activeTab: 'monsters' }">
     <div class="grid grid-cols-6 lg:grid-cols-9">
       <h2
         class="w-fit cursor-pointer p-2 font-heading text-3xl tracking-tight"
@@ -37,9 +37,28 @@ enum Tab {
       </section>
     </template>
     <template x-if=`activeTab === '${Tab.MONSTERS}'`>
-      <section x-data="{ monsters: monsters }">
-        <div class="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3">
-          <ActionCard handler="monsters = [rollMonster(), ...monsters]" />
+      <section x-data="{ monsters: monsters, level: 1 }">
+        <div class="flex items-center justify-center gap-2 p-4">
+          <button
+            x-on:click="if (level > 1) { level-- }"
+            class="aspect-square w-8 rounded-sm border border-black shadow-sm shadow-black active:shadow-inner"
+          >
+            -
+          </button>
+          <span
+            x-text="`Level ${level}`"
+            class="border-b border-t border-black text-lg"></span>
+          <button
+            x-on:click="level++"
+            class="aspect-square w-8 rounded-sm border border-black shadow-sm shadow-black active:shadow-inner"
+          >
+            +
+          </button>
+        </div>
+        <div
+          class="mx-auto grid max-w-sm grid-cols-1 gap-2 md:max-w-none md:grid-cols-2 lg:grid-cols-3"
+        >
+          <ActionCard handler="monsters = [rollMonster(level), ...monsters]" />
           <template x-for="monster in monsters">
             <Monster monster={"monster"} />
           </template>
@@ -47,52 +66,53 @@ enum Tab {
       </section>
     </template>
   </div>
-</MainLayout>
-<script>
-  import Alpine from "alpinejs";
 
-  import {
-    type Knave,
-    rollKnave,
-    upsertKnave,
-    readKnaves,
-    deleteKnave,
-  } from "../scripts/knaves";
+  <script>
+    import Alpine from "alpinejs";
 
-  import {
-    type Monster,
-    rollMonster,
-    upsertMonster,
-    readMonsters,
-    deleteMonster,
-  } from "../scripts/monsters";
+    import {
+      type Knave,
+      rollKnave,
+      upsertKnave,
+      readKnaves,
+      deleteKnave,
+    } from "../scripts/knaves";
 
-  declare global {
-    interface Window {
-      Alpine: typeof Alpine;
+    import {
+      type Monster,
+      rollMonster,
+      upsertMonster,
+      readMonsters,
+      deleteMonster,
+    } from "../scripts/monsters";
 
-      knaves: Knave[];
-      monsters: Monster[];
+    declare global {
+      interface Window {
+        Alpine: typeof Alpine;
 
-      rollKnave: () => Knave;
-      upsertKnave: (uuid: Knave) => void;
-      deleteKnave: (uuid: string) => void;
+        knaves: Knave[];
+        monsters: Monster[];
 
-      rollMonster: () => Monster;
-      upsertMonster: (uuid: Monster) => void;
-      deleteMonster: (uuid: string) => void;
+        rollKnave: () => Knave;
+        upsertKnave: (uuid: Knave) => void;
+        deleteKnave: (uuid: string) => void;
+
+        rollMonster: (level: number) => Monster;
+        upsertMonster: (uuid: Monster) => void;
+        deleteMonster: (uuid: string) => void;
+      }
     }
-  }
 
-  window.Alpine = Alpine;
+    window.Alpine = Alpine;
 
-  window.rollKnave = rollKnave;
-  window.upsertKnave = upsertKnave;
-  window.deleteKnave = deleteKnave;
-  window.knaves = readKnaves();
+    window.rollKnave = rollKnave;
+    window.upsertKnave = upsertKnave;
+    window.deleteKnave = deleteKnave;
+    window.knaves = readKnaves();
 
-  window.rollMonster = rollMonster;
-  window.upsertMonster = upsertMonster;
-  window.deleteMonster = deleteMonster;
-  window.monsters = readMonsters();
-</script>
+    window.rollMonster = rollMonster;
+    window.upsertMonster = upsertMonster;
+    window.deleteMonster = deleteMonster;
+    window.monsters = readMonsters();
+  </script>
+</MainLayout>

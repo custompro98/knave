@@ -1,14 +1,105 @@
+import { rollOnTable } from "knave-2e-generator";
+import { rolld8, rolldN } from "./roll";
+
 export interface Monster {
   id: string;
+  name: string;
+  level: number;
+  curHp: number;
+  maxHp: number;
+  scent: string;
+  texture: string;
+  morale: number;
+  attacks: number;
+  powers: string[];
+  tactics: string[];
+  weaknesses: string[];
 }
+
+rollOnTable("monsters");
 
 const LOCAL_STORAGE_KEY_MONSTERS = "monsters";
 
-export function rollMonster(): Monster {
-  console.log("roll monster");
+export function rollMonster(level: number): Monster {
+  const powers = [];
+  const tactics = [];
+  const weaknesses = [];
+  let attacks = 0;
+  let morale = 7;
+
+  if (1 <= level && level < 3) {
+    tactics.push(rollOnTable("tactics"));
+
+    weaknesses.push(rollOnTable("weaknesses"));
+    weaknesses.push(rollOnTable("weaknesses"));
+    weaknesses.push(rollOnTable("weaknesses"));
+
+    attacks = 1;
+    morale = 5;
+  } else if (3 <= level && level < 6) {
+    tactics.push(rollOnTable("tactics"));
+    tactics.push(rollOnTable("tactics"));
+
+    weaknesses.push(rollOnTable("weaknesses"));
+    weaknesses.push(rollOnTable("weaknesses"));
+    weaknesses.push(rollOnTable("weaknesses"));
+
+    attacks = 2;
+    morale = 7;
+  } else if (6 <= level && level < 10) {
+    tactics.push(rollOnTable("tactics"));
+    tactics.push(rollOnTable("tactics"));
+    tactics.push(rollOnTable("tactics"));
+
+    weaknesses.push(rollOnTable("weaknesses"));
+    weaknesses.push(rollOnTable("weaknesses"));
+
+    powers.push(rollOnTable("powers"));
+
+    attacks = 3;
+    morale = 10;
+  } else if (10 <= level && level < 15) {
+    tactics.push(rollOnTable("tactics"));
+    tactics.push(rollOnTable("tactics"));
+    tactics.push(rollOnTable("tactics"));
+
+    weaknesses.push(rollOnTable("weaknesses"));
+
+    powers.push(rollOnTable("powers"));
+    powers.push(rollOnTable("powers"));
+
+    attacks = 3;
+    morale = 13;
+  } else {
+    tactics.push(rollOnTable("tactics"));
+    tactics.push(rollOnTable("tactics"));
+    tactics.push(rollOnTable("tactics"));
+
+    weaknesses.push(rollOnTable("weaknesses"));
+
+    powers.push(rollOnTable("powers"));
+    powers.push(rollOnTable("powers"));
+    powers.push(rollOnTable("powers"));
+
+    attacks = 4;
+    morale = 17;
+  }
+
+  const hp = [...Array(level)].reduce((acc) => acc + rolld8(), 0);
 
   return {
     id: crypto.randomUUID(),
+    name: rollOnTable("monsters"),
+    curHp: hp,
+    maxHp: hp,
+    level: level,
+    scent: rollOnTable("scents"),
+    texture: rollOnTable("textures"),
+    morale: morale,
+    attacks: attacks,
+    powers: powers,
+    tactics: tactics,
+    weaknesses: weaknesses,
   };
 }
 

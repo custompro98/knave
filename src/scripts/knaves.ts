@@ -1,4 +1,5 @@
 import { rollOnTable } from "knave-2e-generator";
+import { roll3d6, rolld6, rolldN } from "./roll";
 
 export interface Knave {
   id: string;
@@ -167,16 +168,4 @@ export function deleteKnave(uuid: string) {
       JSON.parse(knaves).filter((knave: Knave) => knave.id !== uuid),
     ),
   );
-}
-
-function rolldN(n: number) {
-  return Math.floor(Math.random() * n) + 1;
-}
-
-function rolld6() {
-  return rolldN(6);
-}
-
-function roll3d6() {
-  return rolld6() + rolld6() + rolld6();
 }

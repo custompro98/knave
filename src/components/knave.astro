@@ -16,10 +16,11 @@ interface Props {
       <div
         class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2"
       >
-        <span class="self-center justify-self-center">HP</span>
+        <label for="curHp" class="self-center justify-self-center">HP</label>
         <div class="flex flex-row justify-center">
           <input
-            class="jsutify-self-center w-4 self-center border border-gray-200/75"
+            class="w-4 self-center justify-self-center border border-gray-200/75 text-center"
+            name="curHp"
             max="knave.maxHp"
             x-model="knave.curHp"
             x-on:input.change.debounce="knave.saved = true; upsertKnave(knave)"
@@ -31,9 +32,10 @@ interface Props {
       <div
         class="grid grid-cols-1 md:grid-cols-2 md:gap-2 lg:grid-cols-1 lg:gap-0 xl:grid-cols-2 xl:gap-2"
       >
-        <span class="self-center justify-self-center">Level</span>
+        <label for="level" class="self-center justify-self-center">Level</label>
         <input
-          class="w-4 self-center justify-self-center border border-gray-200/75"
+          class="w-5 self-center justify-self-center border border-gray-200/75 text-center"
+          name="level"
           min="0"
           x-model="knave.level"
           x-on:input.change.debounce="knave.saved = true; upsertKnave(knave)"
@@ -42,9 +44,10 @@ interface Props {
       <div
         class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2"
       >
-        <span class="self-center justify-self-center">XP</span>
+        <label for="xp" class="self-center justify-self-center">XP</label>
         <input
-          class="w-10 self-center justify-self-center border border-gray-200/75"
+          class="w-10 self-center justify-self-center border border-gray-200/75 text-center"
+          name="xp"
           min="0"
           x-model="knave.xp"
           x-on:input.change.debounce="knave.saved = true; upsertKnave(knave)"
@@ -61,49 +64,55 @@ interface Props {
   </div>
   <div class="grid grid-cols-3 gap-2 pb-2">
     <div class="flex flex-col items-center justify-center">
-      <h4 class="text-sm text-black/75">STR</h4>
+      <label for="str" class="text-sm text-black/75">STR</label>
       <input
         class="w-6 border border-gray-200/75 text-center text-lg"
+        name="str"
         x-model="knave.str"
         x-on:input.change.debounce="knave.saved = true; upsertKnave(knave)"
       />
     </div>
     <div class="flex flex-col items-center justify-center">
-      <h4 class="text-sm text-black/75">DEX</h4>
+      <label for="dex" class="text-sm text-black/75">DEX</label>
       <input
         class="w-6 border border-gray-200/75 text-center text-lg"
+        name="dex"
         x-model="knave.dex"
         x-on:input.change.debounce="knave.saved = true; upsertKnave(knave)"
       />
     </div>
     <div class="flex flex-col items-center justify-center">
-      <h4 class="text-sm text-black/75">CON</h4>
+      <label for="con" class="text-sm text-black/75">CON</label>
       <input
         class="w-6 border border-gray-200/75 text-center text-lg"
+        name="con"
         x-model="knave.con"
         x-on:input.change.debounce="knave.saved = true; upsertKnave(knave)"
       />
     </div>
     <div class="flex flex-col items-center justify-center">
-      <h4 class="text-sm text-black/75">INT</h4>
+      <label for="int" class="text-sm text-black/75">INT</label>
       <input
         class="w-6 border border-gray-200/75 text-center text-lg"
+        name="int"
         x-model="knave.int"
         x-on:input.change.debounce="knave.saved = true; upsertKnave(knave)"
       />
     </div>
     <div class="flex flex-col items-center justify-center">
-      <h4 class="text-sm text-black/75">WIS</h4>
+      <label for="wis" class="text-sm text-black/75">WIS</label>
       <input
         class="w-6 border border-gray-200/75 text-center text-lg"
+        name="wis"
         x-model="knave.wis"
         x-on:input.change.debounce="knave.saved = true; upsertKnave(knave)"
       />
     </div>
     <div class="flex flex-col items-center justify-center">
-      <h4 class="text-sm text-black/75">CHA</h4>
+      <label for="cha" class="text-sm text-black/75">CHA</label>
       <input
         class="w-6 border border-gray-200/75 text-center text-lg"
+        name="cha"
         x-model="knave.cha"
         x-on:input.change.debounce="knave.saved = true; upsertKnave(knave)"
       />
