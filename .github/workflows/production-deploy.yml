@@ -1,0 +1,14 @@
+name: Production Deploy
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [opened,reopened, synchronize]
+
+jobs:
+  migrate:
+    uses: ./.github/workflows/migrate.yml
+    with:
+      environment: production

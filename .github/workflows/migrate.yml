@@ -1,22 +1,21 @@
-name: Astro Studio
-
-env:
-  ASTRO_STUDIO_APP_TOKEN: ${{secrets.ASTRO_STUDIO_APP_TOKEN }}
+name: DB Migrate
 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    types: [opened, reopened, synchronize]
+  workflow_call:
+    inputs:
+      environment:
+        required: true
+        type: string
 
 jobs:
-  DB:
+  migrate:
     permissions:
       contents: read
       actions: read
       pull-requests: write
     runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
