@@ -16,4 +16,5 @@ jobs:
     environment: production
     env:
       ASTRO_STUDIO_APP_TOKEN: ${{ secrets.ASTRO_STUDIO_APP_TOKEN }}
+    runs-on: ubuntu-latest
     uses: ./.github/workflows/migrate.yml
