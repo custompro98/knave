@@ -3,6 +3,9 @@ name: DB Migrate
 on:
   workflow_call:
     inputs:
+      environment:
+        required: true
+        type: string
 
 jobs:
   migrate:
@@ -11,6 +14,7 @@ jobs:
       actions: read
       pull-requests: write
     runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
 
     steps:
       - uses: actions/checkout@v4
@@ -19,3 +23,5 @@ jobs:
           node-version: 20
       - uses: jaid/action-npm-install@v1.2.1
       - uses: withastro/action-studio@main
+        env:
+          ASTRO_STUDIO_APP_TOKEN: ${{ secrets.ASTRO_STUDIO_APP_TOKEN }}
